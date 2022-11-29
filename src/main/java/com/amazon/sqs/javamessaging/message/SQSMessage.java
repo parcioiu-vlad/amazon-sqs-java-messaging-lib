@@ -23,11 +23,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageFormatException;
-import javax.jms.MessageNotWriteableException;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.MessageFormatException;
+import jakarta.jms.MessageNotWriteableException;
 
 import com.amazon.sqs.javamessaging.SQSMessageConsumerPrefetch;
 import com.amazon.sqs.javamessaging.SQSMessagingClientConstants;
@@ -404,6 +404,16 @@ public class SQSMessage implements Message {
     @Override
     public void setJMSExpiration(long expiration) throws JMSException {
         this.expiration = expiration;
+    }
+
+    @Override
+    public long getJMSDeliveryTime() throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
+    @Override
+    public void setJMSDeliveryTime(long deliveryTime) throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
     }
 
     @Override
@@ -958,6 +968,16 @@ public class SQSMessage implements Message {
     @Override
     public void clearBody() throws JMSException {
         throw new JMSException("SQSMessage does not have any body");
+    }
+
+    @Override
+    public <T> T getBody(Class<T> c) throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
+    @Override
+    public boolean isBodyAssignableTo(Class c) throws JMSException {
+        return false;
     }
 
     private boolean isValidPropertyValueType(Object value) {

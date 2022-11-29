@@ -19,8 +19,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.jms.ConnectionMetaData;
-import javax.jms.JMSException;
+import jakarta.jms.ConnectionMetaData;
+import jakarta.jms.JMSException;
 
 
 public class SQSConnectionMetaData implements ConnectionMetaData {

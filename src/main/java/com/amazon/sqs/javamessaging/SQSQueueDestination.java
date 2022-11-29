@@ -14,10 +14,10 @@
  */
 package com.amazon.sqs.javamessaging;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
 
-import javax.jms.Queue;
+import jakarta.jms.Queue;
 
 /**
  * A SQSQueueDestination object encapsulates a queue name and SQS specific queue

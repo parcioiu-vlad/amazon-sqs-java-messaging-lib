@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 
 import com.amazon.sqs.javamessaging.SQSMessagingClientConstants;
 

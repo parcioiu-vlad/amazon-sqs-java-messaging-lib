@@ -17,7 +17,7 @@ package com.amazon.sqs.javamessaging.message;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 
 import org.junit.Test;
 

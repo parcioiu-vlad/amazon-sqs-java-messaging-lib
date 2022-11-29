@@ -23,7 +23,7 @@ import com.amazon.sqs.javamessaging.message.SQSMessage;
 
 import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest;
 
-import javax.jms.IllegalStateException;
+import jakarta.jms.IllegalStateException;
 import java.util.Collections;
 import org.junit.Test;
 import org.junit.Before;

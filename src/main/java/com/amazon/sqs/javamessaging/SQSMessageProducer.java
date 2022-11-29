@@ -14,21 +14,22 @@
  */
 package com.amazon.sqs.javamessaging;
 
+import jakarta.jms.CompletionListener;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.jms.Destination;
-import javax.jms.IllegalStateException;
-import javax.jms.InvalidDestinationException;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageFormatException;
-import javax.jms.MessageProducer;
-import javax.jms.Queue;
-import javax.jms.QueueSender;
+import jakarta.jms.Destination;
+import jakarta.jms.IllegalStateException;
+import jakarta.jms.InvalidDestinationException;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.MessageFormatException;
+import jakarta.jms.MessageProducer;
+import jakarta.jms.Queue;
+import jakarta.jms.QueueSender;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -435,6 +436,29 @@ public class SQSMessageProducer implements MessageProducer, QueueSender {
     @Override
     public void send(Destination destination, Message message, int deliveryMode, int priority, long timeToLive) throws JMSException {
         send(destination, message);
+    }
+
+    @Override
+    public void send(Message message, CompletionListener completionListener) throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
+    @Override
+    public void send(Message message, int deliveryMode, int priority, long timeToLive,
+        CompletionListener completionListener) throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
+    @Override
+    public void send(Destination destination, Message message, CompletionListener completionListener)
+        throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
+    @Override
+    public void send(Destination destination, Message message, int deliveryMode, int priority, long timeToLive,
+        CompletionListener completionListener) throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
     }
 
     /** This method is not supported. */

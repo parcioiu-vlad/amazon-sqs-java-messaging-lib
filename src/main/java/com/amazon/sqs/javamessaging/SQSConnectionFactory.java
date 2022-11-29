@@ -14,12 +14,13 @@
  */
 package com.amazon.sqs.javamessaging;
 
+import jakarta.jms.JMSContext;
 import java.util.function.Supplier;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.QueueConnection;
-import javax.jms.QueueConnectionFactory;
+import jakarta.jms.ConnectionFactory;
+import jakarta.jms.JMSException;
+import jakarta.jms.QueueConnection;
+import jakarta.jms.QueueConnectionFactory;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
@@ -116,6 +117,26 @@ public class SQSConnectionFactory implements ConnectionFactory, QueueConnectionF
     public SQSConnection createConnection(String awsAccessKeyId, String awsSecretKey) throws JMSException {
         AwsBasicCredentials basicAWSCredentials = AwsBasicCredentials.create(awsAccessKeyId, awsSecretKey);
         return createConnection(basicAWSCredentials);
+    }
+
+    @Override
+    public JMSContext createContext() {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
+    @Override
+    public JMSContext createContext(String userName, String password) {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
+    @Override
+    public JMSContext createContext(String userName, String password, int sessionMode) {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
+    @Override
+    public JMSContext createContext(int sessionMode) {
+        throw new UnsupportedOperationException("JMS 2.0");
     }
 
     public SQSConnection createConnection(AwsCredentials awsCredentials) throws JMSException {

@@ -19,9 +19,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -51,9 +51,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.jms.JMSException;
-import javax.jms.MessageListener;
-import javax.jms.ObjectMessage;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageListener;
+import jakarta.jms.ObjectMessage;
 
 import org.joda.time.DateTime;
 import org.junit.Assert;
@@ -536,12 +536,12 @@ public class SQSMessageConsumerPrefetchTest {
     public void testSetMessageListener() {
 
         SQSMessageConsumerPrefetch.MessageManager msgManager1 = mock(SQSMessageConsumerPrefetch.MessageManager.class);
-        javax.jms.Message message1 = mock(javax.jms.Message.class);
+        jakarta.jms.Message message1 = mock(jakarta.jms.Message.class);
         when(msgManager1.getMessage())
                 .thenReturn(message1);
 
         SQSMessageConsumerPrefetch.MessageManager msgManager2 = mock(SQSMessageConsumerPrefetch.MessageManager.class);
-        javax.jms.Message message2 = mock(javax.jms.Message.class);
+        jakarta.jms.Message message2 = mock(jakarta.jms.Message.class);
         when(msgManager2.getMessage())
                 .thenReturn(message2);
 
@@ -578,7 +578,7 @@ public class SQSMessageConsumerPrefetchTest {
      * Test WaitForStart when preftech already started
      */
     @Test
-    public void testWaitForStartCurrentStateStart() throws javax.jms.IllegalStateException, InterruptedException {
+    public void testWaitForStartCurrentStateStart() throws jakarta.jms.IllegalStateException, InterruptedException {
 
         /*
          * Set up consumer prefetch and mocks
@@ -613,7 +613,7 @@ public class SQSMessageConsumerPrefetchTest {
      * Test WaitForStart when preftech already closed
      */
     @Test
-    public void testWaitForStartCurrentStateClose() throws javax.jms.IllegalStateException, InterruptedException {
+    public void testWaitForStartCurrentStateClose() throws jakarta.jms.IllegalStateException, InterruptedException {
 
         /*
          * Set up consumer prefetch and mocks
@@ -649,7 +649,7 @@ public class SQSMessageConsumerPrefetchTest {
      * for the prefetch to start
      */
     @Test
-    public void testWaitForStartUpdateStateToStart() throws javax.jms.IllegalStateException, InterruptedException {
+    public void testWaitForStartUpdateStateToStart() throws jakarta.jms.IllegalStateException, InterruptedException {
 
         /*
          * Set up consumer prefetch and mocks
@@ -692,7 +692,7 @@ public class SQSMessageConsumerPrefetchTest {
      * Test WaitForStart when waiting thread is interrupted
      */
     @Test
-    public void testWaitForStartInterrupted() throws javax.jms.IllegalStateException, InterruptedException {
+    public void testWaitForStartInterrupted() throws jakarta.jms.IllegalStateException, InterruptedException {
 
         /*
          * Set up consumer prefetch and mocks
@@ -870,7 +870,7 @@ public class SQSMessageConsumerPrefetchTest {
         /*
          * Convert the SQS message to JMS Message
          */
-        javax.jms.Message jsmMessage = consumerPrefetch.convertToJMSMessage(message);
+        jakarta.jms.Message jsmMessage = consumerPrefetch.convertToJMSMessage(message);
 
         /*
          * Verify results
@@ -910,7 +910,7 @@ public class SQSMessageConsumerPrefetchTest {
         /*
          * Convert the SQS message to JMS Message
          */
-        javax.jms.Message jsmMessage = consumerPrefetch.convertToJMSMessage(message);
+        jakarta.jms.Message jsmMessage = consumerPrefetch.convertToJMSMessage(message);
 
         /*
          * Verify results
@@ -1000,7 +1000,7 @@ public class SQSMessageConsumerPrefetchTest {
         /*
          * Convert the SQS message to JMS Message
          */
-        javax.jms.Message jsmMessage = consumerPrefetch.convertToJMSMessage(message);
+        jakarta.jms.Message jsmMessage = consumerPrefetch.convertToJMSMessage(message);
 
         /*
          * Verify results
@@ -1084,7 +1084,7 @@ public class SQSMessageConsumerPrefetchTest {
         /*
          * Convert the SQS message to JMS Message
          */
-        javax.jms.Message jsmMessage = consumerPrefetch.convertToJMSMessage(message);
+        jakarta.jms.Message jsmMessage = consumerPrefetch.convertToJMSMessage(message);
 
         /*
          * Verify results
@@ -1220,7 +1220,7 @@ public class SQSMessageConsumerPrefetchTest {
             public void run() {
                 try {
                     beforeReceiveCall.countDown();
-                    javax.jms.Message msg = consumerPrefetch.receive(0);
+                    jakarta.jms.Message msg = consumerPrefetch.receive(0);
                     if (msg == null) {
                         noMessageReturned.set(true);
                     }
@@ -1898,12 +1898,12 @@ public class SQSMessageConsumerPrefetchTest {
         }).when(consumerPrefetch).requestMessage();
         
         // Close the prefetcher immediately after completing one loop
-        final List<Future<javax.jms.Message>> receivedMessageFutures = new ArrayList<>();
+        final List<Future<jakarta.jms.Message>> receivedMessageFutures = new ArrayList<>();
         doAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 invocation.callRealMethod();
-                for (Future<javax.jms.Message> messageFuture : receivedMessageFutures) {
+                for (Future<jakarta.jms.Message> messageFuture : receivedMessageFutures) {
                     Assert.assertNotNull(messageFuture.get());
                 }
                 consumerPrefetch.close();
@@ -1916,9 +1916,9 @@ public class SQSMessageConsumerPrefetchTest {
         
         ExecutorService receiveExecutor = Executors.newFixedThreadPool(concurrentReceives);
         for (int i = 0; i < concurrentReceives; i++) {
-            receivedMessageFutures.add(receiveExecutor.submit(new Callable<javax.jms.Message>() {
+            receivedMessageFutures.add(receiveExecutor.submit(new Callable<jakarta.jms.Message>() {
                 @Override
-                public javax.jms.Message call() throws Exception {
+                public jakarta.jms.Message call() throws Exception {
                     return consumerPrefetch.receive();
                 }
             }));
@@ -1965,7 +1965,7 @@ public class SQSMessageConsumerPrefetchTest {
             		.receiptHandle(receiptHandler)
                     .attributes(mapAttributes)
                     .build();
-            javax.jms.Message m1 = consumerPrefetch.convertToJMSMessage(message);
+            jakarta.jms.Message m1 = consumerPrefetch.convertToJMSMessage(message);
             when(msgManager.getMessage()).thenReturn(m1);
 
             consumerPrefetch.messageQueue.add(msgManager);

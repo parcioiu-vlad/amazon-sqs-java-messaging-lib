@@ -14,31 +14,16 @@
  */
 package com.amazon.sqs.javamessaging;
 
-
-import com.amazon.sqs.javamessaging.AmazonSQSMessagingClientWrapper;
-import com.amazon.sqs.javamessaging.SQSConnection;
-import com.amazon.sqs.javamessaging.SQSMessageProducer;
-import com.amazon.sqs.javamessaging.SQSQueueDestination;
-import com.amazon.sqs.javamessaging.SQSSession;
 import com.amazon.sqs.javamessaging.acknowledge.Acknowledger;
 import com.amazon.sqs.javamessaging.message.SQSBytesMessage;
 import com.amazon.sqs.javamessaging.message.SQSMessage;
 import com.amazon.sqs.javamessaging.message.SQSObjectMessage;
 import com.amazon.sqs.javamessaging.message.SQSTextMessage;
-
-import software.amazon.awssdk.services.sqs.model.Message;
-import software.amazon.awssdk.services.sqs.model.MessageAttributeValue;
-import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeName;
-import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
-import software.amazon.awssdk.services.sqs.model.SendMessageResponse;
-import software.amazon.awssdk.utils.BinaryUtils;
-
-import javax.jms.InvalidDestinationException;
-import javax.jms.JMSException;
-import javax.jms.IllegalStateException;
-import javax.jms.Queue;
-import javax.jms.Destination;
-
+import jakarta.jms.Destination;
+import jakarta.jms.IllegalStateException;
+import jakarta.jms.InvalidDestinationException;
+import jakarta.jms.JMSException;
+import jakarta.jms.Queue;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -48,17 +33,23 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
+import software.amazon.awssdk.services.sqs.model.Message;
+import software.amazon.awssdk.services.sqs.model.MessageAttributeValue;
+import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeName;
+import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
+import software.amazon.awssdk.services.sqs.model.SendMessageResponse;
+import software.amazon.awssdk.utils.BinaryUtils;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -286,7 +277,7 @@ public class SQSMessageProducerTest {
     @Test
     public void testSendInternalNonSQSMessage() throws JMSException {
 
-        javax.jms.Message msg = mock(javax.jms.Message.class);
+        jakarta.jms.Message msg = mock(jakarta.jms.Message.class);
 
         try {
             producer.sendInternal(destination, msg);
@@ -770,7 +761,7 @@ public class SQSMessageProducerTest {
         return messageAttributes;
     }
 
-    private class sendMessageRequestMatcher extends ArgumentMatcher<SendMessageRequest> {
+    private class sendMessageRequestMatcher implements ArgumentMatcher<SendMessageRequest> {
 
         private String queueUrl;
         private List<String> messagesBody;
@@ -784,13 +775,7 @@ public class SQSMessageProducerTest {
         }
 
         @Override
-        public boolean matches(Object argument) {
-
-            if (!(argument instanceof SendMessageRequest)) {
-                return false;
-            }
-
-            SendMessageRequest reqeust = (SendMessageRequest)argument;
+        public boolean matches(SendMessageRequest reqeust) {
             assertEquals(queueUrl, reqeust.queueUrl());
             assertTrue(messagesBody.contains(reqeust.messageBody()));
             assertEquals(messageAttributes , reqeust.messageAttributes());

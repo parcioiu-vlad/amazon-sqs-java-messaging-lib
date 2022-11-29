@@ -16,7 +16,7 @@ package com.amazon.sqs.javamessaging.acknowledge;
 
 import java.util.List;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 
 import com.amazon.sqs.javamessaging.message.SQSMessage;
 

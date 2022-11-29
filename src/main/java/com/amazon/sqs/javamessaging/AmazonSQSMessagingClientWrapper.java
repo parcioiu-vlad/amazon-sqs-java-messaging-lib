@@ -17,9 +17,9 @@ package com.amazon.sqs.javamessaging;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.jms.InvalidDestinationException;
-import javax.jms.JMSException;
-import javax.jms.JMSSecurityException;
+import jakarta.jms.InvalidDestinationException;
+import jakarta.jms.JMSException;
+import jakarta.jms.JMSSecurityException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

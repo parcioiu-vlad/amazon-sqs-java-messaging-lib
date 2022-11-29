@@ -18,20 +18,20 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.jms.IllegalStateException;
-import javax.jms.Connection;
-import javax.jms.ConnectionConsumer;
-import javax.jms.ConnectionMetaData;
-import javax.jms.Destination;
-import javax.jms.ExceptionListener;
-import javax.jms.InvalidClientIDException;
-import javax.jms.JMSException;
-import javax.jms.Queue;
-import javax.jms.QueueConnection;
-import javax.jms.QueueSession;
-import javax.jms.ServerSessionPool;
-import javax.jms.Session;
-import javax.jms.Topic;
+import jakarta.jms.IllegalStateException;
+import jakarta.jms.Connection;
+import jakarta.jms.ConnectionConsumer;
+import jakarta.jms.ConnectionMetaData;
+import jakarta.jms.Destination;
+import jakarta.jms.ExceptionListener;
+import jakarta.jms.InvalidClientIDException;
+import jakarta.jms.JMSException;
+import jakarta.jms.Queue;
+import jakarta.jms.QueueConnection;
+import jakarta.jms.QueueSession;
+import jakarta.jms.ServerSessionPool;
+import jakarta.jms.Session;
+import jakarta.jms.Topic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -217,6 +217,16 @@ public class SQSConnection implements Connection, QueueConnection {
         }
                
         return sqsSession;
+    }
+
+    @Override
+    public Session createSession(int sessionMode) throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
+    @Override
+    public Session createSession() throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
     }
 
     @Override
@@ -505,11 +515,23 @@ public class SQSConnection implements Connection, QueueConnection {
         throw new JMSException(SQSMessagingClientConstants.UNSUPPORTED_METHOD);
     }
 
+    @Override
+    public ConnectionConsumer createSharedConnectionConsumer(Topic topic, String subscriptionName,
+        String messageSelector, ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
+    }
+
     /** This method is not supported. */
     @Override
     public ConnectionConsumer createDurableConnectionConsumer(Topic topic, String subscriptionName, String messageSelector,
             ServerSessionPool sessionPool, int maxMessages) throws JMSException {
         throw new JMSException(SQSMessagingClientConstants.UNSUPPORTED_METHOD);
+    }
+
+    @Override
+    public ConnectionConsumer createSharedDurableConnectionConsumer(Topic topic, String subscriptionName,
+        String messageSelector, ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        throw new UnsupportedOperationException("JMS 2.0");
     }
 
     /** This method is not supported. */

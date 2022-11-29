@@ -29,11 +29,12 @@ import com.amazon.sqs.javamessaging.acknowledge.SQSMessageIdentifier;
 import com.amazon.sqs.javamessaging.message.SQSMessage;
 import com.amazon.sqs.javamessaging.message.SQSTextMessage;
 
+import org.mockito.Mockito;
 import software.amazon.awssdk.services.sqs.model.Message;
 
-import javax.jms.JMSException;
-import javax.jms.MessageListener;
-import javax.jms.Session;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageListener;
+import jakarta.jms.Session;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -48,10 +49,10 @@ import org.mockito.ArgumentCaptor;
 
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyList;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -631,7 +632,7 @@ public class SQSSessionCallbackSchedulerTest {
 
         MessageListener messageListener = mock(MessageListener.class);
         doThrow(RuntimeException.class)
-            .when(messageListener).onMessage(any(javax.jms.Message.class));
+            .when(messageListener).onMessage(any(jakarta.jms.Message.class));
         
         List<SQSMessageConsumerPrefetch.MessageManager> messages = new ArrayList<SQSMessageConsumerPrefetch.MessageManager>();
         messages.add(createFifoMessageManager("queue1", "group1", "message1", "handle1"));

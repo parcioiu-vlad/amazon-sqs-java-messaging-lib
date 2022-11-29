@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageListener;
+import jakarta.jms.Destination;
+import jakarta.jms.JMSException;
+import jakarta.jms.MessageListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -276,7 +276,7 @@ public class SQSMessageConsumerPrefetch implements Runnable, PrefetchManager {
         List<MessageManager> messageManagers = new ArrayList<MessageManager>();
         for (Message message : messages) {
             try {
-                javax.jms.Message jmsMessage = convertToJMSMessage(message);
+                jakarta.jms.Message jmsMessage = convertToJMSMessage(message);
                 messageManagers.add(new MessageManager(this, jmsMessage));
             } catch (JMSException e) {
                 LOG.warn("Caught exception while converting received messages", e);
@@ -340,10 +340,10 @@ public class SQSMessageConsumerPrefetch implements Runnable, PrefetchManager {
      * @return Converted JMS message
      * @throws JMSException
      */
-    protected javax.jms.Message convertToJMSMessage(Message message) throws JMSException {
+    protected jakarta.jms.Message convertToJMSMessage(Message message) throws JMSException {
         MessageAttributeValue messageTypeAttribute = message.messageAttributes().get(
                 SQSMessage.JMS_SQS_MESSAGE_TYPE);
-        javax.jms.Message jmsMessage = null;
+        jakarta.jms.Message jmsMessage = null;
         if (messageTypeAttribute == null) {
             jmsMessage = new SQSTextMessage(acknowledger, queueUrl, message);
         } else {
@@ -465,9 +465,9 @@ public class SQSMessageConsumerPrefetch implements Runnable, PrefetchManager {
 
         private final PrefetchManager prefetchManager;
 
-        private final javax.jms.Message message;
+        private final jakarta.jms.Message message;
 
-        public MessageManager(PrefetchManager prefetchManager, javax.jms.Message message) {
+        public MessageManager(PrefetchManager prefetchManager, jakarta.jms.Message message) {
             this.prefetchManager = prefetchManager;
             this.message = message;
         }
@@ -476,16 +476,16 @@ public class SQSMessageConsumerPrefetch implements Runnable, PrefetchManager {
             return prefetchManager;
         }
 
-        public javax.jms.Message getMessage() {
+        public jakarta.jms.Message getMessage() {
             return message;
         }
     }
 
-    javax.jms.Message receive() throws JMSException {
+    jakarta.jms.Message receive() throws JMSException {
         return receive(0);
     }
 
-    javax.jms.Message receive(long timeout) throws JMSException {
+    jakarta.jms.Message receive(long timeout) throws JMSException {
         if (cannotDeliver()) {
             return null;
         }
@@ -538,7 +538,7 @@ public class SQSMessageConsumerPrefetch implements Runnable, PrefetchManager {
         }
     }
 
-    javax.jms.Message receiveNoWait() throws JMSException {
+    jakarta.jms.Message receiveNoWait() throws JMSException {
         if (cannotDeliver()) {
             return null;
         }
@@ -593,11 +593,11 @@ public class SQSMessageConsumerPrefetch implements Runnable, PrefetchManager {
     /**
      * Helper that notifies PrefetchThread that message is dispatched and AutoAcknowledge
      */
-    private javax.jms.Message messageHandler(MessageManager messageManager) throws JMSException {
+    private jakarta.jms.Message messageHandler(MessageManager messageManager) throws JMSException {
         if (messageManager == null) {
             return null;
         }
-        javax.jms.Message message = messageManager.getMessage();
+        jakarta.jms.Message message = messageManager.getMessage();
 
         // Notify PrefetchThread that message is dispatched
         this.messageDispatched();

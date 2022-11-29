@@ -17,7 +17,7 @@ package com.amazon.sqs.javamessaging;
 import com.amazon.sqs.javamessaging.acknowledge.BulkSQSOperation;
 import com.amazon.sqs.javamessaging.acknowledge.SQSMessageIdentifier;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;

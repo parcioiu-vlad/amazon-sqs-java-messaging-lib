@@ -18,8 +18,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -39,16 +39,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javax.jms.Destination;
-import javax.jms.IllegalStateException;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Queue;
-import javax.jms.TextMessage;
+import jakarta.jms.Destination;
+import jakarta.jms.IllegalStateException;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.MessageConsumer;
+import jakarta.jms.MessageListener;
+import jakarta.jms.MessageProducer;
+import jakarta.jms.ObjectMessage;
+import jakarta.jms.Queue;
+import jakarta.jms.TextMessage;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -1139,7 +1139,7 @@ public class SQSSessionTest  {
         sqsSession.close();
     }
     
-    private static class ReceiveRequestMatcher extends ArgumentMatcher<ReceiveMessageRequest> {
+    private static class ReceiveRequestMatcher implements ArgumentMatcher<ReceiveMessageRequest> {
         private String queueUrl;
         
         public ReceiveRequestMatcher(String queueUrl) {
@@ -1147,15 +1147,12 @@ public class SQSSessionTest  {
         }
 
         @Override
-        public boolean matches(Object argument) {
-            if (argument instanceof ReceiveMessageRequest) {
-                ReceiveMessageRequest request = (ReceiveMessageRequest)argument;
-                return queueUrl.equals(request.queueUrl());
-            } else {
+        public boolean matches(ReceiveMessageRequest request) {
+            if (request == null) {
                 return false;
             }
+            return queueUrl.equals(request.queueUrl());
         }
-        
     }
 
     private software.amazon.awssdk.services.sqs.model.Message createFifoMessage(String groupId, String messageId, String receiptHandle) throws JMSException {

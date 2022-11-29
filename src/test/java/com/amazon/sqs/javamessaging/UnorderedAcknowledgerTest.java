@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 
 import org.junit.Before;
 import org.junit.Test;

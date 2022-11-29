@@ -14,7 +14,7 @@
  */
 package com.amazon.sqs.javamessaging;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 
 import org.junit.Test;
 

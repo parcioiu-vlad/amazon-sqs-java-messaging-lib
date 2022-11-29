@@ -14,26 +14,12 @@
  */
 package com.amazon.sqs.javamessaging;
 
-
-import com.amazon.sqs.javamessaging.AmazonSQSMessagingClientWrapper;
-import com.amazon.sqs.javamessaging.SQSMessageProducer;
-import com.amazon.sqs.javamessaging.SQSQueueDestination;
-import com.amazon.sqs.javamessaging.SQSSession;
 import com.amazon.sqs.javamessaging.acknowledge.Acknowledger;
 import com.amazon.sqs.javamessaging.message.SQSBytesMessage;
 import com.amazon.sqs.javamessaging.message.SQSMessage;
 import com.amazon.sqs.javamessaging.message.SQSObjectMessage;
 import com.amazon.sqs.javamessaging.message.SQSTextMessage;
-
-import software.amazon.awssdk.services.sqs.model.Message;
-import software.amazon.awssdk.services.sqs.model.MessageAttributeValue;
-import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeName;
-import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
-import software.amazon.awssdk.services.sqs.model.SendMessageResponse;
-import software.amazon.awssdk.utils.BinaryUtils;
-
-import javax.jms.JMSException;
-
+import jakarta.jms.JMSException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -43,10 +29,17 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
+import software.amazon.awssdk.services.sqs.model.Message;
+import software.amazon.awssdk.services.sqs.model.MessageAttributeValue;
+import software.amazon.awssdk.services.sqs.model.MessageSystemAttributeName;
+import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
+import software.amazon.awssdk.services.sqs.model.SendMessageResponse;
+import software.amazon.awssdk.utils.BinaryUtils;
+
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -430,7 +423,7 @@ public class SQSMessageProducerFifoTest {
         verify(msg).setSequenceNumber(SEQ_NUMBER_2);
     }
 
-    private class sendMessageRequestMatcher extends ArgumentMatcher<SendMessageRequest> {
+    private class sendMessageRequestMatcher implements ArgumentMatcher<SendMessageRequest> {
 
         private String queueUrl;
         private String messagesBody;
@@ -447,13 +440,7 @@ public class SQSMessageProducerFifoTest {
         }
 
         @Override
-        public boolean matches(Object argument) {
-
-            if (!(argument instanceof SendMessageRequest)) {
-                return false;
-            }
-
-            SendMessageRequest request = (SendMessageRequest)argument;
+        public boolean matches(SendMessageRequest request) {
             assertEquals(queueUrl, request.queueUrl());
             assertEquals(messagesBody, request.messageBody());
             String messageType = request.messageAttributes().get(SQSMessage.JMS_SQS_MESSAGE_TYPE).stringValue();

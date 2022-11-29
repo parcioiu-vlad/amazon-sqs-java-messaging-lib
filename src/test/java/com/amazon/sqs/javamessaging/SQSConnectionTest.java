@@ -14,8 +14,8 @@
  */
 package com.amazon.sqs.javamessaging;
 
-import javax.jms.*;
-import javax.jms.IllegalStateException;
+import jakarta.jms.*;
+import jakarta.jms.IllegalStateException;
 
 import org.junit.Before;
 import org.junit.Test;
